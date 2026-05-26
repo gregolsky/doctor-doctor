@@ -30,8 +30,7 @@ const plan: Plan = {
 describe('AspectA', () => {
   it('renders doctor rows sorted by type then lastName', () => {
     render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={false} cellDisplay="abbrev"
-        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={false}        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
     )
     const rows = screen.getAllByRole('row')
     expect(rows[1]?.textContent).toContain('Nowak')
@@ -40,26 +39,16 @@ describe('AspectA', () => {
 
   it('renders abbrev in view mode', () => {
     render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={false} cellDisplay="abbrev"
-        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={false}        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
     )
     expect(screen.getByText('OIOM')).toBeDefined()
     expect(screen.getByText('ANES')).toBeDefined()
   })
 
-  it('renders emoji in emoji mode', () => {
-    render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={false} cellDisplay="emoji"
-        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
-    )
-    expect(screen.getByText('🫁')).toBeDefined()
-  })
-
   it('cell click toggles exclude: empty → exclude → empty', () => {
     const onChange = vi.fn()
     const { rerender } = render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={true} cellDisplay="abbrev"
-        onPrefsChange={onChange} onCellPick={vi.fn()} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={true}        onPrefsChange={onChange} onCellPick={vi.fn()} />,
     )
     const cells = screen.getAllByRole('cell')
     const firstDataCell = cells.find((c) => c.className.includes('schedule-cell'))!
@@ -70,8 +59,7 @@ describe('AspectA', () => {
     expect(afterFirst.exclusions.length).toBe(1)
 
     rerender(
-      <AspectA plan={afterFirst} unit={unit} prefsEditMode={true} cellDisplay="abbrev"
-        onPrefsChange={onChange} onCellPick={vi.fn()} />,
+      <AspectA plan={afterFirst} unit={unit} prefsEditMode={true}        onPrefsChange={onChange} onCellPick={vi.fn()} />,
     )
 
     fireEvent.click(firstDataCell)
@@ -82,8 +70,7 @@ describe('AspectA', () => {
   it('row block button fills all 31 January days with exclusions, then clears them', () => {
     const onChange = vi.fn()
     const { rerender } = render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={true} cellDisplay="abbrev"
-        onPrefsChange={onChange} onCellPick={vi.fn()} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={true}        onPrefsChange={onChange} onCellPick={vi.fn()} />,
     )
     const blockBtns = screen.getAllByRole('button', { name: /zablokuj cały rząd/i })
     const firstBtn = blockBtns[0]!
@@ -94,8 +81,7 @@ describe('AspectA', () => {
     expect(d1Excls.length).toBe(31)
 
     rerender(
-      <AspectA plan={afterBlock} unit={unit} prefsEditMode={true} cellDisplay="abbrev"
-        onPrefsChange={onChange} onCellPick={vi.fn()} />,
+      <AspectA plan={afterBlock} unit={unit} prefsEditMode={true}        onPrefsChange={onChange} onCellPick={vi.fn()} />,
     )
     const unblockBtns = screen.getAllByRole('button', { name: /odblokuj cały rząd/i })
     fireEvent.click(unblockBtns[0]!)
@@ -106,8 +92,7 @@ describe('AspectA', () => {
   it('single click in view mode opens ward picker after delay', () => {
     vi.useFakeTimers()
     render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={false} cellDisplay="abbrev"
-        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={false}        onPrefsChange={vi.fn()} onCellPick={vi.fn()} />,
     )
     const cells = screen.getAllByRole('cell')
     const firstDataCell = cells.find((c) => c.className.includes('schedule-cell'))!
@@ -125,8 +110,7 @@ describe('AspectA', () => {
     vi.useFakeTimers()
     const onCellPick = vi.fn()
     render(
-      <AspectA plan={plan} unit={unit} prefsEditMode={false} cellDisplay="abbrev"
-        onPrefsChange={vi.fn()} onCellPick={onCellPick} />,
+      <AspectA plan={plan} unit={unit} prefsEditMode={false}        onPrefsChange={vi.fn()} onCellPick={onCellPick} />,
     )
     const cells = screen.getAllByRole('cell')
     const firstDataCell = cells.find((c) => c.className.includes('schedule-cell'))!

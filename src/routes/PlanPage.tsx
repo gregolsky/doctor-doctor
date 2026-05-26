@@ -17,7 +17,6 @@ import { putPlan } from '@/storage/db'
 import { generateSlots } from '@/utils/date'
 
 type Aspect = 'A' | 'B'
-type CellDisplay = 'abbrev' | 'emoji'
 
 export function PlanPage() {
   const { planId } = useParams<{ planId: string }>()
@@ -28,7 +27,6 @@ export function PlanPage() {
   const [plan, setPlan] = useState<Plan | null>(null)
   const [unit, setUnit] = useState<Unit | null>(null)
   const [aspect, setAspect] = useState<Aspect>('A')
-  const [cellDisplay, setCellDisplay] = useState<CellDisplay>('abbrev')
   const [prefsEditMode, setPrefsEditMode] = useState(false)
   const [shareModalOpen, setShareModalOpen] = useState(false)
   const [sharePassword, setSharePassword] = useState('')
@@ -169,11 +167,9 @@ export function PlanPage() {
         plan={plan}
         unit={unit}
         aspect={aspect}
-        cellDisplay={cellDisplay}
         prefsEditMode={prefsEditMode}
         gaRunning={running}
         onAspectChange={setAspect}
-        onCellDisplayChange={setCellDisplay}
         onPrefsEditModeChange={setPrefsEditMode}
         onGenerate={() => void handleGenerate()}
         onRegenerate={() => void handleRegenerate()}
@@ -206,7 +202,6 @@ export function PlanPage() {
           plan={plan}
           unit={unit}
           prefsEditMode={prefsEditMode}
-          cellDisplay={cellDisplay}
           onPrefsChange={(updated) => void persist(updated)}
           onCellPick={handleCellPickFromA}
         />

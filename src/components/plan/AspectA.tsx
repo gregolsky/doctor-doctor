@@ -1,17 +1,14 @@
 import { useState, useRef } from 'react'
 import type { Plan, Unit, Assignment } from '@/types'
-import { DOCTOR_TYPE_EMOJI, getEffectiveMaxDuties } from '@/types'
+import { DOCTOR_TYPE_EMOJI } from '@/types'
 import { sortDoctorsByTypeAndName } from '@/utils/sort'
 import { daysInMonth, isWeekend } from '@/utils/date'
 import { CellPicker } from './CellPicker'
-
-type CellDisplay = 'abbrev' | 'emoji'
 
 interface AspectAProps {
   plan: Plan
   unit: Unit
   prefsEditMode: boolean
-  cellDisplay: CellDisplay
   onPrefsChange: (plan: Plan) => void
   onCellPick: (date: string, doctorId: string, wardId: string | null) => void
 }
@@ -20,7 +17,7 @@ function isExcluded(plan: Plan, doctorId: string, date: string): boolean {
   return plan.exclusions.some((e) => e.doctorId === doctorId && e.date === date)
 }
 
-export function AspectA({ plan, unit, prefsEditMode, cellDisplay, onPrefsChange, onCellPick }: AspectAProps) {
+export function AspectA({ plan, unit, prefsEditMode, onPrefsChange, onCellPick }: AspectAProps) {
   const days = daysInMonth(plan.year, plan.month)
   const dayNums = Array.from({ length: days }, (_, i) => i + 1)
   const doctors = sortDoctorsByTypeAndName(unit.doctors)
@@ -85,7 +82,7 @@ export function AspectA({ plan, unit, prefsEditMode, cellDisplay, onPrefsChange,
     if (!a) return null
     const ward = unit.wards.find((w) => w.id === a.wardId)
     if (!ward) return null
-    const display = cellDisplay === 'emoji' && ward.emoji ? ward.emoji : ward.abbrev
+    const display = ward.abbrev
     return (
       <span className={a.pinned ? 'cell-pinned' : ''}>
         {a.pinned && <span className="pin-indicator" aria-label="Przypięty">📌</span>}
@@ -105,7 +102,7 @@ export function AspectA({ plan, unit, prefsEditMode, cellDisplay, onPrefsChange,
         <thead>
           <tr>
             <th className="header-cell sticky-col col-label">Lekarz</th>
-            <th className="header-cell col-maxduties">Max dni</th>
+            {prefsEditMode && <th className="header-cell col-maxduties">Max dni</th>}
             {dayNums.map((d) => (
               <th key={d} className={['day-header', isWeekend(plan.year, plan.month, d) ? 'weekend' : ''].filter(Boolean).join(' ')}>{d}</th>
             ))}
@@ -133,8 +130,8 @@ export function AspectA({ plan, unit, prefsEditMode, cellDisplay, onPrefsChange,
                   })()}
                 </div>
               </td>
-              <td className="max-duties-cell">
-                {prefsEditMode ? (
+              {prefsEditMode && (
+                <td className="max-duties-cell">
                   <input
                     type="number"
                     min={0}
@@ -153,12 +150,8 @@ export function AspectA({ plan, unit, prefsEditMode, cellDisplay, onPrefsChange,
                       onPrefsChange({ ...plan, doctorMaxDuties: overrides })
                     }}
                   />
-                ) : (
-                  getEffectiveMaxDuties(plan, unit, doc.id) === 0
-                    ? <span title="Nie dyżuruje">🚫</span>
-                    : getEffectiveMaxDuties(plan, unit, doc.id)
-                )}
-              </td>
+                </td>
+              )}
               {dayNums.map((d) => {
                 const date = `${plan.year}-${String(plan.month).padStart(2, '0')}-${String(d).padStart(2, '0')}`
                 const excluded = prefsEditMode && isExcluded(plan, doc.id, date)
