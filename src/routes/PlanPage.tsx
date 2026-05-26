@@ -155,12 +155,6 @@ export function PlanPage() {
     }, 100)
   }
 
-  async function handleMonthChange(year: number, month: number) {
-    if (!plan || !unit) return
-    const assignments = generateSlots(year, month, unit.wards.map((w) => w.id)).map((s) => ({ ...s, doctorId: null, pinned: false }))
-    await persist({ ...plan, year, month, assignments })
-  }
-
   return (
     <div className={`page plan-page ${printMode ? 'print-mode' : ''}`}>
       <Toolbar
@@ -177,7 +171,6 @@ export function PlanPage() {
         onExportEncryptedLink={() => setShareModalOpen(true)}
         onImport={(file) => void handleImport(file)}
         onPrint={handlePrint}
-        onMonthChange={(y, m) => void handleMonthChange(y, m)}
       />
 
       {running && (

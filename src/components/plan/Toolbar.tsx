@@ -18,7 +18,6 @@ interface ToolbarProps {
   onExportEncryptedLink: () => void
   onImport: (file: File) => void
   onPrint: () => void
-  onMonthChange: (year: number, month: number) => void
 }
 
 export function Toolbar({
@@ -34,7 +33,6 @@ export function Toolbar({
   onExportEncryptedLink,
   onImport,
   onPrint,
-  onMonthChange,
 }: ToolbarProps) {
   const fileRef = useRef<HTMLInputElement>(null)
   const [exportOpen, setExportOpen] = useState(false)
@@ -49,7 +47,7 @@ export function Toolbar({
 
   return (
     <div className="toolbar no-print" role="toolbar" aria-label="Pasek narzędzi planu">
-      <MonthPicker year={plan.year} month={plan.month} onChange={onMonthChange} />
+      <MonthPicker year={plan.year} month={plan.month} />
 
       <div className="toolbar-sep" />
 
