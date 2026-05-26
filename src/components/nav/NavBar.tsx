@@ -7,7 +7,7 @@ export function NavBar() {
     <nav className="navbar no-print" aria-label="Nawigacja główna">
       <div className="navbar-brand">
         <Link to="/" className="navbar-logo">
-          🏥 Doctor Doctor
+          🏥 Szpitalik
         </Link>
       </div>
       <div className="navbar-links">
